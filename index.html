@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E-Waste Pickup System</title>
+
+<style>
+:root {
+  --green: #12372a;
+  --leaf: #2f7d56;
+  --paper: #f2f5f1;
+  --line: #cfe0d4;
+  --ink: #17211c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.5 Arial, sans-serif;
+}
+
+main {
+  max-width: 950px;
+  margin: 28px auto;
+  padding: 0 18px;
+}
+
+.intro {
+  background: var(--green);
+  color: white;
+  padding: 28px;
+  border-radius: 12px;
+  margin-bottom: 22px;
+}
+
+.intro h1 {
+  margin: 0 0 8px;
+  font-size: clamp(26px, 5vw, 38px);
+}
+
+.intro p {
+  margin: 0;
+  color: #d9eadf;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+h2 {
+  font-size: 21px;
+  margin: 0 0 14px;
+  color: var(--green);
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #edf2ee;
+}
+
+.item:last-child {
+  border-bottom: 0;
+}
+
+.item small {
+  display: block;
+  color: #617268;
+  font-size: 12px;
+}
+
+.qty {
+  width: 70px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+}
+
+.field {
+  margin-bottom: 13px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: white;
+  font: inherit;
+}
+
+button {
+  background: var(--leaf);
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #245f42;
+}
+
+.submit {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.summary {
+  background: var(--paper);
+  padding: 10px;
+  border-radius: 7px;
+  margin: 12px 0;
+  font-weight: bold;
+}
+
+.message {
+  display: none;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+.success {
+  display: block;
+  background: #e8f5ec;
+  color: #155c39;
+}
+
+.error {
+  display: block;
+  background: #fff0ed;
+  color: #963c2c;
+}
+
+.booking {
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+}
+
+.booking strong {
+  color: var(--leaf);
+}
+
+.muted {
+  color: #617268;
+  font-size: 13px;
+}
+
+@media(max-width: 700px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+
+  main {
+    margin-top: 18px;
+  }
+
+  .intro {
+    padding: 22px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<main>
+
+  <section class="intro">
+    <h1>E-Waste Doorstep Pickup</h1>
+    <p>
+      Choose your old electronic items, enter your details
+      and book a pickup from your home.
+    </p>
+  </section>
+
+  <div class="columns">
+
+    <!-- E-WASTE SELECTION -->
+    <section class="panel">
+
+      <h2>1. Select your e-waste</h2>
+      <p class="muted">Enter the quantity of each item.</p>
+
+      <div class="item">
+        <div>📱 Smartphones
+          <small>Old or damaged phones</small>
+        </div>
+        <input class="qty" type="number" min="0" max="50"
+          value="0" data-name="Smartphones">
+      </div>
+
+      <div class="item">
+        <div>💻 Laptops
+          <small>Working or broken laptops</small>
+        </div>
+        <input class="qty" type="number" min="0" max="50"
+          value="0" data-name="Laptops">
+      </div>
+
+      <div class="item">
+        <div>⌨️ Keyboards / Mice
+          <small>Computer accessories</small>
+        </div>
+        <input class="qty" type="number" min="0" max="50"
+          value="0" data-name="Keyboards / Mice">
+      </div>
+
+      <div class="item">
+        <div>🔋 Power Banks
+          <small>Used power banks</small>
+        </div>
+        <input class="qty" type="number" min="0" max="50"
+          value="0" data-name="Power Banks">
+      </div>
+
+      <div class="item">
+        <div>🔌 Cables / Chargers
+          <small>Old charging cables</small>
+        </div>
+        <input class="qty" type="number" min="0" max="50"
+          value="0" data-name="Cables / Chargers">
+      </div>
+
+      <div class="summary">
+        Total items: <span id="total">0</span>
+      </div>
+
+    </section>
+
+    <!-- PICKUP FORM -->
+    <section class="panel">
+
+      <h2>2. Pickup details</h2>
+
+      <form id="pickupForm">
+
+        <div class="field">
+          <label for="name">Full name *</label>
+          <input id="name" required
+            placeholder="Enter your name">
+        </div>
+
+        <div class="field">
+          <label for="phone">Contact number *</label>
+          <input id="phone" type="tel"
+            inputmode="numeric" maxlength="10"
+            required placeholder="10-digit mobile number">
+        </div>
+
+        <div class="field">
+          <label for="address">Pickup address *</label>
+          <textarea id="address" rows="3" required
+            placeholder="House number, street, city and PIN code"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="date">Pickup date *</label>
+          <input id="date" type="date" required>
+        </div>
+
+        <button class="submit" type="submit">
+          Book Pickup
+        </button>
+
+        <div id="message" class="message"
+          role="status" aria-live="polite"></div>
+
+      </form>
+    </section>
+
+  </div>
+
+  <!-- BOOKING SUMMARY -->
+  <section class="panel" style="margin-top:20px">
+
+    <h2>Booking Summary</h2>
+
+    <p class="muted">
+      Here is a summary of your submitted e-waste pickup bookings.
+    </p>
+
+    <div id="bookings">
+      <p class="muted">No bookings yet.</p>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+
+// Get HTML elements
+const quantityInputs = [
+  ...document.querySelectorAll(".qty")
+];
+
+const total = document.getElementById("total");
+const form = document.getElementById("pickupForm");
+const message = document.getElementById("message");
+const bookingList = document.getElementById("bookings");
+const dateInput = document.getElementById("date");
+
+// Get today's date
+function today() {
+  const d = new Date();
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0, 10);
+}
+
+dateInput.min = today();
+
+// Get selected e-waste items
+function getSelectedItems() {
+  return quantityInputs.map(input => ({
+    name: input.dataset.name,
+    quantity: Math.max(
+      0,
+      Math.min(50, Number(input.value) || 0)
+    )
+  })).filter(item => item.quantity > 0);
+}
+
+// Calculate total items
+function updateTotal() {
+  total.textContent = quantityInputs.reduce(
+    (sum, input) =>
+      sum + Math.max(0, Number(input.value) || 0),
+    0
+  );
+}
+
+// Update total whenever quantity changes
+quantityInputs.forEach(input =>
+  input.addEventListener("input", updateTotal)
+);
+
+// Get saved bookings from localStorage
+function getBookings() {
+  try {
+    return JSON.parse(
+      localStorage.getItem("circuitcycle_simple_bookings") || "[]"
+    );
+  } catch {
+    return [];
+  }
+}
+
+// Protect displayed text from HTML injection
+function escapeText(value) {
+  return String(value).replace(/[&<>"']/g, ch => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[ch]));
+}
+
+// Display booking summary
+function renderBookings() {
+
+  const bookings = getBookings();
+
+  if (!bookings.length) {
+    bookingList.innerHTML =
+      '<p class="muted">No bookings yet.</p>';
+    return;
+  }
+
+  bookingList.innerHTML = bookings.slice().reverse().map(b => `
+    <div class="booking">
+
+      <strong>
+        Booking ID: ${escapeText(b.id)}
+      </strong>
+
+      <div>
+        ${escapeText(b.name)} · ${escapeText(b.date)}
+      </div>
+
+      <div class="muted">
+        ${b.items.map(i =>
+          `${escapeText(i.name)} × ${i.quantity}`
+        ).join(", ")}
+      </div>
+
+      <div class="muted">
+        ${escapeText(b.address)} · ${escapeText(b.phone)}
+      </div>
+
+      <div class="muted">
+        Booking status: Successfully submitted
+      </div>
+
+    </div>
+  `).join("");
+}
+
+// Show success or error message
+function showMessage(text, type) {
+  message.textContent = text;
+  message.className = "message " + type;
+}
+
+// When the user clicks Book Pickup
+form.addEventListener("submit", event => {
+
+  event.preventDefault();
+
+  const name =
+    document.getElementById("name").value.trim();
+
+  const phone =
+    document.getElementById("phone").value.trim();
+
+  const address =
+    document.getElementById("address").value.trim();
+
+  const date = dateInput.value;
+
+  const items = getSelectedItems();
+
+  // Check required fields
+  if (!name || !phone || !address || !date) {
+    showMessage(
+      "Please fill in all required details.",
+      "error"
+    );
+    return;
+  }
+
+  // Check phone number
+  if (!/^\d{10}$/.test(phone)) {
+    showMessage(
+      "Enter exactly 10 digits for the mobile number.",
+      "error"
+    );
+    return;
+  }
+
+  // Check pickup date
+  if (date < today()) {
+    showMessage(
+      "Please select today or a future date.",
+      "error"
+    );
+    return;
+  }
+
+  // Check selected items
+  if (items.length === 0) {
+    showMessage(
+      "Please select at least one e-waste item.",
+      "error"
+    );
+    return;
+  }
+
+  // Create booking object
+  const booking = {
+    id: "EW-" + Math.floor(
+      1000 + Math.random() * 9000
+    ),
+    name,
+    phone,
+    address,
+    date,
+    items
+  };
+
+  // Save booking in browser storage
+  const bookings = getBookings();
+
+  bookings.push(booking);
+
+  localStorage.setItem(
+    "circuitcycle_simple_bookings",
+    JSON.stringify(bookings)
+  );
+
+  // Show success message
+  showMessage(
+    "Booking Summary saved successfully! Your booking ID is " +
+    booking.id +
+    ". Scroll down to view your details.",
+    "success"
+  );
+
+  // Refresh booking summary
+  renderBookings();
+
+  // Reset form
+  form.reset();
+
+  quantityInputs.forEach(input => input.value = 0);
+
+  dateInput.min = today();
+
+  updateTotal();
+
+});
+
+// Load existing bookings when page opens
+renderBookings();
+updateTotal();
+
+</script>
+
+</body>
+</html>
